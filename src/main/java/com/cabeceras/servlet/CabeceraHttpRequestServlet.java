@@ -57,7 +57,7 @@ public class CabeceraHttpRequestServlet extends HttpServlet {
             out.println("<li>REMOTE CLIENTE: " + ipCliente + "</li>");
             out.println("</ul>");
 
-            out.println("<h2>Listado de cabeceras:</h2>");
+
             out.println("<ul>");
             Enumeration<String> headerNames = req.getHeaderNames();
             while (headerNames.hasMoreElements()) {

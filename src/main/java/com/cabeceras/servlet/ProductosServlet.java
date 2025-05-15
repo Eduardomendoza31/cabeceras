@@ -26,10 +26,34 @@ public class ProductosServlet extends HttpServlet {
 
         String servletPath = req.getServletPath();
         boolean esXls = servletPath.endsWith(".xls");
+        boolean esJson = servletPath.endsWith("productojson");
+
 
         if (esXls) {
             resp.setContentType("application/vnd.ms-excel");
             resp.setHeader("Content-Disposition", "attachment; filename=productos.xls");
+        }
+        if (esJson) {
+            resp.setContentType("application/json;charset=UTF-8");
+            try (PrintWriter out = resp.getWriter()) {
+                out.println("[");
+                for (int i = 0; i < productos.size(); i++) {
+                    Producto p = productos.get(i);
+                    out.println("  {");
+                    out.println("    \"id\": " + p.getId() + ",");
+                    out.println("    \"nombre\": \"" + p.getNombre() + "\",");
+                    out.println("    \"tipo\": \"" + p.getTipo() + "\",");
+                    out.println("    \"precio\": " + p.getPrecio());
+                    out.print("  }");
+                    if (i < productos.size() - 1) {
+                        out.println(",");
+                    } else {
+                        out.println();
+                    }
+                }
+                out.println("]");
+            }
+            return; // Importante para que no se ejecute el resto del HTML
         }
 
         try (PrintWriter out = resp.getWriter()) {
